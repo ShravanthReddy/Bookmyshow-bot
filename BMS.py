@@ -38,9 +38,6 @@ def startbms():
     movie_name = url_string[4].split('-')
     movie_name.remove('hyderabad')
 
-    #print(url_string)
-    #print(movie_name)
-
     driver.get(url)
 
     i = 1
@@ -51,7 +48,6 @@ def startbms():
     while not isDone:
 
         time.sleep(1)
-        print(theatreDone)
 
         while not theatreDone:
 
@@ -76,9 +72,7 @@ def startbms():
 
                 i = 1
                 theatreDone = True
-
-        print(dict_theatre)
-
+                
         for theatre in theatre_list:
 
             #print(theatre)
@@ -87,7 +81,6 @@ def startbms():
             if dict_theatre[theatre] > 0:
 
                 theatre_name = driver.find_element(By.XPATH, '//*[@id="venuelist"]/li[' + str(dict_theatre[theatre]) + ']/div[1]/div[2]/div/div[1]/a').text
-                print(theatre_name)
 
                 if theatre_name == theatre:
 
@@ -106,8 +99,6 @@ def startbms():
                                 driver.execute_script("arguments[0].click();", show_button)
 
                                 show_time = driver.find_element(By.XPATH, '//*[@id="venuelist"]/li[' + str(dict_theatre[theatre]) + ']/div[2]/div[2]/div[' + str(j) + ']/a').text
-                                print(str(j) + ': ' + theatre_name)
-                                print(show_time)
 
                                 j += 1
 
@@ -120,14 +111,6 @@ def startbms():
                                     driver.execute_script("arguments[0].click();", popup_button)
                                     bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
                                     bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-                                    print('Tickets available' )
-                                    print('-----------')
-                                    #isDone = True
-
-                                else:
-
-                                    print('Sold Out')
-                                    print('-----------')
 
                             except NoSuchElementException:
 
