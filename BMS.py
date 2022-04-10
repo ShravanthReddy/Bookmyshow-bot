@@ -1,6 +1,6 @@
 import time
 from selenium import webdriver
-from settings import API_KEY, URL, chatId1, chatId2
+from settings import API_KEY, URL, movie_url, chatId1, chatId2
 from selenium. common. exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -24,14 +24,14 @@ driver = webdriver.Remote(
 
 def startbms():
 
-    theatre_list = ['AMB Cinemas: Gachibowli', 'Bhramaramba 70MM A/C Dts: Kukatpally', 'INOX: GSM Mall, Hyderabad', 'Mallikarjuna 70mm A/C DTS: Kukatpally', 'PVR Forum Sujana Mall: Kukatpally, Hyderabad', 'Sai Ranga: Miyapur']
+    theatre_list = ['Bhramaramba 70MM A/C Dts: Kukatpally', 'Mallikarjuna 70mm A/C DTS: Kukatpally', 'Sai Ranga: Miyapur']
     dict_theatre = {}
 
     for theatre in theatre_list:
 
         dict_theatre[theatre] = 0 
 
-    url = "https://in.bookmyshow.com/buytickets/beast-hyderabad/movie-hyd-ET00326189-MT/20220413"
+    url = movie_url
 
     url_string = url.split('/')
 
@@ -72,10 +72,9 @@ def startbms():
 
                 i = 1
                 theatreDone = True
-                
-        for theatre in theatre_list:
 
-            #print(theatre)
+        for theatre in theatre_list:
+            
             j = 1
 
             if dict_theatre[theatre] > 0:
@@ -109,8 +108,38 @@ def startbms():
                                 if popup_button.is_displayed():
 
                                     driver.execute_script("arguments[0].click();", popup_button)
-                                    bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-                                    bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                    bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                    bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+
+                                else:
+
+                                    try:
+
+                                        select_seat = driver.find_element(By.XPATH, '//*[@id="proceed-Qty"]')
+
+                                        driver.execute_script("arguments[0].click();", select_seat)
+
+                                        back_button = driver.find_element(By.XPATH, '//*[@id="disback"]')
+
+                                        driver.execute_script("arguments[0].click();", back_button)
+
+                                        bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                        bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+
+                                    except NoSuchElementException:
+
+                                        try:
+
+                                            back_button = driver.find_element(By.XPATH, '//*[@id="disback"]')
+
+                                            driver.execute_script("arguments[0].click();", back_button)
+
+                                            bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                            bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+
+                                        except NoSuchElementException:
+
+                                            print('Sold Out')
 
                             except NoSuchElementException:
 
@@ -126,7 +155,7 @@ def startbms():
 
                 theatreDone = False
 
-        time.sleep(10)
+        time.sleep(20)
 
         driver.refresh()
 
