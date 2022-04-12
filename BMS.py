@@ -104,42 +104,28 @@ def startbms():
                                 time.sleep(0.5)
 
                                 popup_button = driver.find_element(By.XPATH, '//*[@id="btnPopupCancel"]')
+                                select_seat = driver.find_element(By.XPATH, '//*[@id="proceed-Qty"]')
+                                back_button = driver.find_element(By.XPATH, '//*[@id="disback"]')
 
                                 if popup_button.is_displayed():
 
                                     driver.execute_script("arguments[0].click();", popup_button)
-                                    bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-                                    bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                    bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                    bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
 
-                                else:
+                                elif select_seat.is_displayed():
+                                    
+                                    driver.execute_script("arguments[0].click();", select_seat)
+                                    back_button = driver.find_element(By.XPATH, '//*[@id="disback"]')
+                                    driver.execute_script("arguments[0].click();", back_button)
+                                    bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                    bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
 
-                                    try:
+                                elif back_button.is_displayed():
 
-                                        select_seat = driver.find_element(By.XPATH, '//*[@id="proceed-Qty"]')
-
-                                        driver.execute_script("arguments[0].click();", select_seat)
-
-                                        back_button = driver.find_element(By.XPATH, '//*[@id="disback"]')
-
-                                        driver.execute_script("arguments[0].click();", back_button)
-
-                                        bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-                                        bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-
-                                    except NoSuchElementException:
-
-                                        try:
-
-                                            back_button = driver.find_element(By.XPATH, '//*[@id="disback"]')
-
-                                            driver.execute_script("arguments[0].click();", back_button)
-
-                                            bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-                                            bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
-
-                                        except NoSuchElementException:
-
-                                            print('Sold Out')
+                                    driver.execute_script("arguments[0].click();", back_button)
+                                    bot.send_message(chatId1, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
+                                    bot.send_message(chatId2, "For " + ' '.join(movie_name).upper() + " on " + url_string[6] + "\nTickets available at " + theatre_name + "\nShow time: " + show_time)
 
                             except NoSuchElementException:
 
