@@ -24,7 +24,7 @@ driver = webdriver.Remote(
 
 def startbms():
 
-    theatre_list = ['Bhramaramba 70MM A/C Dts: Kukatpally', 'Mallikarjuna 70mm A/C DTS: Kukatpally', 'Sai Ranga: Miyapur']
+    theatre_list = ['Bhramaramba 70MM A/C Dts: Kukatpally', 'Mallikarjuna 70mm A/C DTS: Kukatpally', 'Sandhya 35mm: RTC X Road', 'Sandhya 70MM 4K Dolby Atmos: RTC X Roads', 'Sudarshan 35MM 4k Laser & Dolby Atmos: RTC X Roads', 'Devi 70MM 4K Laser & Dolby Atmos: RTC X Roads']
     dict_theatre = {}
 
     for theatre in theatre_list:
